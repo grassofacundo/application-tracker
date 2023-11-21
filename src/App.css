@@ -1,0 +1,19 @@
+.add-country {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.show-panel-button {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.add-country textarea {
+    width: 80%;
+}
+
+.add-country button {
+    width: 120px;
+}

@@ -1,0 +1,31 @@
+.panel-wrapper {
+    border: 1px solid black;
+    margin: 10px 0px;
+}
+
+.country-panel {
+    display: flex;
+    gap: 10px;
+}
+
+.application-list {
+    display: grid;
+    grid-template-columns: [first] 1fr [line2] 1fr [line3] 1fr;
+    gap: 5px;
+    margin: 10px 0px;
+}
+
+.application-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.application-form fieldset {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.application-form textarea {
+    resize: none;
+}
