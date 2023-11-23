@@ -1,7 +1,18 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
+import {
+    getFirestore,
+    doc,
+    setDoc,
+    getDoc,
+    collection,
+    query,
+    where,
+    getDocs,
+    limit,
+    orderBy,
+} from "firebase/firestore";
 import { application, applicationDb, eventReturn } from "../types/database";
-import { countryStored } from "../types/country";
+import { countryStoredAsDoc, countryStoredInList } from "../types/country";
 
 const firebaseConfig = {
     apiKey: import.meta.env.VITE_API_KEY,
@@ -74,8 +85,82 @@ class FirebaseDb {
         return response;
     }
 
-    async getAllCountries(): Promise<eventReturn<countryStored[]>> {
-        const response: eventReturn<countryStored[]> = {
+    async incrementCountrySelectedCount(
+        countryCode: string,
+        count: number
+    ): Promise<eventReturn<null>> {
+        const response: eventReturn<null> = {
+            ok: false,
+        };
+        try {
+            await setDoc(
+                doc(this.db, this.collectionName, countryCode),
+                {
+                    selectedCount: count,
+                },
+                { merge: true }
+            )
+                .then(() => (response.ok = true))
+                .catch((error) => {
+                    response.ok = false;
+                    response.error = { message: error.message };
+                });
+        } catch (error) {
+            response.ok = false;
+            if (error instanceof Error) {
+                response.error = { message: error.message };
+            } else {
+                response.error = {
+                    message: `Couldn't update selection code for ${countryCode}`,
+                };
+            }
+        }
+        return response;
+    }
+
+    async getCountryBySelectedCount(
+        count: number
+    ): Promise<eventReturn<countryStoredAsDoc>> {
+        const response: eventReturn<countryStoredAsDoc> = {
+            ok: false,
+        };
+        try {
+            const orderByText =
+                Number(Math.random().toFixed()) === 1 ? "desc" : undefined;
+            const q = query(
+                collection(this.db, this.collectionName),
+                where("selectedCount", "==", count),
+                orderBy("name", orderByText),
+                limit(5)
+            );
+            const querySnapshot = await getDocs(q);
+            const countries: countryStoredAsDoc[] = [];
+
+            querySnapshot.forEach((doc) =>
+                countries.push(doc.data() as countryStoredAsDoc)
+            );
+
+            const country: countryStoredAsDoc | null =
+                countries[Math.floor(Math.random() * countries.length)];
+            if (country) {
+                response.ok = true;
+                response.content = country;
+            }
+        } catch (error) {
+            response.ok = false;
+            if (error instanceof Error) {
+                response.error = { message: error.message };
+            } else {
+                response.error = {
+                    message: `Couldn't fetch applications`,
+                };
+            }
+        }
+        return response;
+    }
+
+    async getAllCountries(): Promise<eventReturn<countryStoredInList[]>> {
+        const response: eventReturn<countryStoredInList[]> = {
             ok: false,
         };
         //Create entry
@@ -84,7 +169,7 @@ class FirebaseDb {
             const list = await getDoc(listDoc);
             if (list.exists()) {
                 response.ok = true;
-                response.content = list.data() as countryStored[];
+                response.content = list.data() as countryStoredInList[];
             }
         } catch (error) {
             response.ok = false;

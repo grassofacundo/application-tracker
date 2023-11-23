@@ -1,9 +1,9 @@
-import { countryResponse } from "../types/country";
+import { countryResponseApi } from "../types/country";
 
 class Country {
     url = "https://restcountries.com/v3.1/name";
 
-    async getInfo(countryName: string): Promise<countryResponse | Error> {
+    async getInfo(countryName: string): Promise<countryResponseApi | Error> {
         let response;
         try {
             response = await fetch(`${this.url}/${countryName}`);
