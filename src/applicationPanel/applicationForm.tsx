@@ -8,12 +8,23 @@ type thisProps = {
     onUpdateApplications(application: application): Promise<eventReturn<null>>;
 };
 
+type links = {
+    link1: string;
+    link2: string;
+    link3: string;
+};
+
 const AppForm: FunctionComponent<thisProps> = ({
     application,
     onUpdateApplications,
 }) => {
     const [disabled, setDisabled] = useState<boolean>(!!application);
     const [loading, setLoading] = useState<boolean>(false);
+    const [links, setLinks] = useState<links>({
+        link1: application?.link1 ?? "",
+        link2: application?.link2 ?? "",
+        link3: application?.link3 ?? "",
+    });
 
     function getDate(fullDate: Date): string {
         const d = new Date(fullDate);
@@ -89,6 +100,11 @@ const AppForm: FunctionComponent<thisProps> = ({
         setLoading(false);
     }
 
+    function handleLinkChange(link: string, index: 1 | 2 | 3): void {
+        const propertyName: string = `link${index}`;
+        setLinks({ ...links, [propertyName]: link });
+    }
+
     return (
         <form className="application-form" onSubmit={setApplication}>
             <fieldset disabled={disabled}>
@@ -112,11 +128,6 @@ const AppForm: FunctionComponent<thisProps> = ({
                     placeholder="Source"
                     defaultValue={application?.source}
                 />
-                <textarea
-                    name="notes"
-                    placeholder="notes"
-                    defaultValue={application?.notes}
-                />
                 <input
                     name="city"
                     placeholder="city"
@@ -138,20 +149,51 @@ const AppForm: FunctionComponent<thisProps> = ({
                     />
                     <label htmlFor="remote">Is remote?</label>
                 </div>
-                <input
-                    name="link1"
-                    placeholder="link"
-                    defaultValue={application?.link1}
-                />
-                <input
-                    name="link2"
-                    placeholder="link"
-                    defaultValue={application?.link2}
-                />
-                <input
-                    name="link3"
-                    placeholder="link"
-                    defaultValue={application?.link3}
+                <div className="application-link-wrapper">
+                    <input
+                        name="link1"
+                        placeholder="link"
+                        defaultValue={application?.link1}
+                        onChange={(e) => handleLinkChange(e.target.value, 1)}
+                    />
+                    {links.link1 && (
+                        <a href={links.link1} target="_blank">
+                            Navigate
+                        </a>
+                    )}
+                </div>
+                <div className="application-link-wrapper">
+                    <input
+                        name="link2"
+                        placeholder="link"
+                        defaultValue={application?.link2}
+                        onChange={(e) => handleLinkChange(e.target.value, 2)}
+                    />
+                    {links.link2 && (
+                        <a href={links.link2} target="_blank">
+                            Navigate
+                        </a>
+                    )}
+                </div>
+
+                <div className="application-link-wrapper">
+                    <input
+                        name="link3"
+                        placeholder="link"
+                        defaultValue={application?.link3}
+                        onChange={(e) => handleLinkChange(e.target.value, 3)}
+                    />
+                    {links.link3 && (
+                        <a href={links.link3} target="_blank">
+                            Navigate
+                        </a>
+                    )}
+                </div>
+
+                <textarea
+                    name="notes"
+                    placeholder="notes"
+                    defaultValue={application?.notes}
                 />
             </fieldset>
             <button type="submit" disabled={disabled || loading}>
