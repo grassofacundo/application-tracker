@@ -62,9 +62,12 @@ const Panel: FunctionComponent<thisProps> = ({ name, code }) => {
         application: application
     ): Promise<eventReturn<null>> {
         const exists = !!application.id;
-        let appsCopy = structuredClone(applications);
+        const appsCopy = structuredClone(applications);
         if (exists) {
-            appsCopy = [...appsCopy, application];
+            const appToUpdate = appsCopy.findIndex(
+                (app) => app.id === application.id
+            );
+            appsCopy[appToUpdate] = application;
         } else {
             application.id = createId();
             appsCopy.push(application);

@@ -98,6 +98,7 @@ const AppForm: FunctionComponent<thisProps> = ({
             form.reset();
         }
         setLoading(false);
+        setDisabled(true);
     }
 
     function handleLinkChange(link: string, index: 1 | 2 | 3): void {
