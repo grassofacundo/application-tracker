@@ -1,6 +1,6 @@
 import { countryResponseApi } from "../types/country";
 
-class Country {
+class CountryService {
     url = "https://restcountries.com/v3.1/name";
 
     async getInfo(countryName: string): Promise<countryResponseApi | Error> {
@@ -17,5 +17,5 @@ class Country {
     }
 }
 
-const country = new Country();
-export default country;
+const countryService = new CountryService();
+export default countryService;

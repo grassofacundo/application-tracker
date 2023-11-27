@@ -1,6 +1,6 @@
 //#region Dependency list
 import { FunctionComponent, useState, FormEvent } from "react";
-import { application, eventReturn } from "../types/database";
+import { application, eventReturn } from "../../types/database";
 //#endregion
 
 type thisProps = {
@@ -96,9 +96,14 @@ const AppForm: FunctionComponent<thisProps> = ({
         if (response.ok) {
             const form = formEvent.target as HTMLFormElement;
             form.reset();
+            setLinks({
+                link1: "",
+                link2: "",
+                link3: "",
+            });
         }
         setLoading(false);
-        setDisabled(true);
+        setDisabled(false);
     }
 
     function handleLinkChange(link: string, index: 1 | 2 | 3): void {

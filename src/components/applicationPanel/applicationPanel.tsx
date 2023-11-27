@@ -1,7 +1,7 @@
 //#region Dependency list
 import { FunctionComponent, useState } from "react";
-import { application, eventReturn } from "../types/database";
-import firebaseDb from "../services/firebase";
+import { application, eventReturn } from "../../types/database";
+import firebaseDb from "../../services/firebase";
 import "./applicationPanel.css";
 import AppForm from "./applicationForm";
 import { Timestamp } from "firebase/firestore";
@@ -73,6 +73,11 @@ const Panel: FunctionComponent<thisProps> = ({ name, code }) => {
             appsCopy.push(application);
         }
         const response = await firebaseDb.setApplications(appsCopy, code);
+        const incremented = await firebaseDb.incrementCountryAppsCount(
+            code,
+            appsCopy.length
+        );
+        if (incremented) console.log("Count updated");
         if (response.ok) setApplications(appsCopy);
         return response;
     }

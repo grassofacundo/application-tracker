@@ -26,11 +26,15 @@ const firebaseConfig = {
 class FirebaseDb {
     app;
     db;
-    collectionName = "countries";
+    collectionName = "";
 
     constructor() {
         this.app = initializeApp(firebaseConfig);
         this.db = getFirestore(this.app);
+    }
+
+    setCollectionName(email: string): void {
+        this.collectionName = `countries-${email}`;
     }
 
     async createCountry(countryCode: string, countryName: string) {
@@ -41,7 +45,7 @@ class FirebaseDb {
         try {
             await setDoc(doc(this.db, this.collectionName, countryCode), {
                 name: countryName,
-                selectedCount: 0,
+                appsCount: 0,
             })
                 .then(() => (response.ok = true))
                 .catch((error) => {
@@ -85,7 +89,7 @@ class FirebaseDb {
         return response;
     }
 
-    async incrementCountrySelectedCount(
+    async incrementCountryAppsCount(
         countryCode: string,
         count: number
     ): Promise<eventReturn<null>> {
@@ -96,7 +100,7 @@ class FirebaseDb {
             await setDoc(
                 doc(this.db, this.collectionName, countryCode),
                 {
-                    selectedCount: count,
+                    appsCount: count,
                 },
                 { merge: true }
             )
@@ -118,7 +122,7 @@ class FirebaseDb {
         return response;
     }
 
-    async getCountryBySelectedCount(
+    async getCountryByAppsCount(
         count: number
     ): Promise<eventReturn<countryStoredAsDoc>> {
         const response: eventReturn<countryStoredAsDoc> = {
@@ -129,7 +133,7 @@ class FirebaseDb {
                 Number(Math.random().toFixed()) === 1 ? "desc" : undefined;
             const q = query(
                 collection(this.db, this.collectionName),
-                where("selectedCount", "==", count),
+                where("appsCount", "==", count),
                 orderBy("name", orderByText),
                 limit(5)
             );
@@ -167,10 +171,9 @@ class FirebaseDb {
         try {
             const listDoc = doc(this.db, this.collectionName, "list");
             const list = await getDoc(listDoc);
-            if (list.exists()) {
-                response.ok = true;
+            response.ok = true;
+            if (list.exists())
                 response.content = list.data() as countryStoredInList[];
-            }
         } catch (error) {
             response.ok = false;
             if (error instanceof Error) {
