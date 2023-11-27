@@ -11,8 +11,8 @@ import firebaseDb from "../../services/firebase";
 import GetCountryPanel from "../getCountryPanel/getCountryPanel";
 import Panel from "../applicationPanel/applicationPanel";
 import AddCountryPanel from "../addCountryPanel/addCountryPanel";
-import "./Landing.css";
 import { getAuth, signOut } from "firebase/auth";
+import "./landing.css";
 //#endregion
 
 type thisProps = {
