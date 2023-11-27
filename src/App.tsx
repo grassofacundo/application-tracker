@@ -94,8 +94,6 @@ const App: FunctionComponent<thisProps> = () => {
         if (user) {
             if (user.email) firebaseDb.setCollectionName(user.email);
             setIsAuth(true);
-        } else {
-            setIsAuth(false);
         }
     });
 
