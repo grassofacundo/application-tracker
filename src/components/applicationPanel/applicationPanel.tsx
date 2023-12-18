@@ -47,7 +47,11 @@ const Panel: FunctionComponent<thisProps> = ({ name, code }) => {
                         link2: app.link2,
                         link3: app.link3,
                     };
-                    parsedApps.push(newApp);
+                    if (app.rejected) {
+                        parsedApps.push(newApp);
+                    } else {
+                        parsedApps.unshift(newApp);
+                    }
                 });
                 setApplications(parsedApps);
             }

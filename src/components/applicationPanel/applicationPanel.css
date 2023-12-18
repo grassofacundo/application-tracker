@@ -22,9 +22,15 @@
 }
 
 .application-form fieldset {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.application-form .rejected {
+    border-color: red;
+    opacity: 0.5;
 }
 
 .application-form textarea {
@@ -35,4 +41,13 @@
 
 .application-link-wrapper a {
     margin-left: 10px;
+}
+
+.application-form .form-rejected-overlay {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    background-color: red;
+    opacity: 0.5;
 }

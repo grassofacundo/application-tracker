@@ -103,7 +103,7 @@ const AppForm: FunctionComponent<thisProps> = ({
             });
         }
         setLoading(false);
-        setDisabled(false);
+        setDisabled(true);
     }
 
     function handleLinkChange(link: string, index: 1 | 2 | 3): void {
@@ -113,7 +113,10 @@ const AppForm: FunctionComponent<thisProps> = ({
 
     return (
         <form className="application-form" onSubmit={setApplication}>
-            <fieldset disabled={disabled}>
+            <fieldset
+                disabled={disabled}
+                className={application?.rejected ? "rejected" : ""}
+            >
                 <input
                     name="companyName"
                     placeholder="companyName"
@@ -201,6 +204,9 @@ const AppForm: FunctionComponent<thisProps> = ({
                     placeholder="notes"
                     defaultValue={application?.notes}
                 />
+                {application?.rejected && (
+                    <div className="form-rejected-overlay"></div>
+                )}
             </fieldset>
             <button type="submit" disabled={disabled || loading}>
                 {loading ? "Loading" : "Submit"}
