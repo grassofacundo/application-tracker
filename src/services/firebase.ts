@@ -146,8 +146,9 @@ class FirebaseDb {
 
             const country: countryStoredAsDoc | null =
                 countries[Math.floor(Math.random() * countries.length)];
+
+            response.ok = true;
             if (country) {
-                response.ok = true;
                 response.content = country;
             }
         } catch (error) {
