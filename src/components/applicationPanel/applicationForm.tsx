@@ -28,9 +28,12 @@ const AppForm: FunctionComponent<thisProps> = ({
 
     function getDate(fullDate: Date): string {
         const d = new Date(fullDate);
-        const stringDate = `${d.getFullYear()}-${
-            d.getMonth() + 1
-        }-${d.getDate()}`;
+        const month =
+            d.getMonth() + 1 < 10
+                ? `0${d.getMonth() + 1}`
+                : `${d.getMonth() + 1}`;
+        const day = d.getDate() < 10 ? `0${d.getDate()}` : `${d.getDate()}`;
+        const stringDate = `${d.getFullYear()}-${month}-${day}`;
         return stringDate;
     }
 
@@ -123,7 +126,7 @@ const AppForm: FunctionComponent<thisProps> = ({
                     defaultValue={application?.companyName}
                 />
                 <div>
-                    <label htmlFor="date">Applied date </label>
+                    <label htmlFor="date">Applied date</label>
                     <input
                         name="date"
                         type="date"
