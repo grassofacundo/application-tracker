@@ -3,7 +3,7 @@ import { FunctionComponent, useState } from "react";
 import { countryResponseApi, countryStoredAsDoc } from "../../types/country";
 import firebaseDb from "../../services/firebase";
 import countryService from "../../services/country";
-import "./getCountryPanel.css";
+import { Box, Button } from "@mui/material";
 //#endregion
 
 type thisProps = {
@@ -39,11 +39,21 @@ const GetCountryPanel: FunctionComponent<thisProps> = ({ loading }) => {
     }
 
     return (
-        <div className="random-country-panel">
+        <Box
+            sx={{
+                border: "1px solid black",
+                padding: "10px",
+                marginBottom: "15px",
+            }}
+        >
             <h3>Where to apply today?</h3>
-            <button onClick={getRandomCountry} disabled={!!randomCountry}>
+            <Button
+                variant="contained"
+                onClick={getRandomCountry}
+                disabled={!!randomCountry}
+            >
                 {loading ? "Loading" : "Feeling lucky"}
-            </button>
+            </Button>
             {randomCountry && (
                 <div>
                     <p>{`Today's country is: ${randomCountry.name.common}`}</p>
@@ -58,7 +68,7 @@ const GetCountryPanel: FunctionComponent<thisProps> = ({ loading }) => {
                     ))}
                 </div>
             )}
-        </div>
+        </Box>
     );
 };
 

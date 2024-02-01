@@ -1,6 +1,16 @@
 //#region Dependency list
 import { FunctionComponent, useState, FormEvent } from "react";
 import { application, eventReturn } from "../../types/database";
+import {
+    Button,
+    Checkbox,
+    CircularProgress,
+    FormControl,
+    FormControlLabel,
+    Grid,
+    Link,
+    TextField,
+} from "@mui/material";
 //#endregion
 
 type thisProps = {
@@ -26,17 +36,6 @@ const AppForm: FunctionComponent<thisProps> = ({
         link3: application?.link3 ?? "",
     });
 
-    function getDate(fullDate: Date): string {
-        const d = new Date(fullDate);
-        const month =
-            d.getMonth() + 1 < 10
-                ? `0${d.getMonth() + 1}`
-                : `${d.getMonth() + 1}`;
-        const day = d.getDate() < 10 ? `0${d.getDate()}` : `${d.getDate()}`;
-        const stringDate = `${d.getFullYear()}-${month}-${day}`;
-        return stringDate;
-    }
-
     async function setApplication(formEvent: FormEvent<HTMLFormElement>) {
         setLoading(true);
         formEvent.preventDefault();
@@ -48,7 +47,7 @@ const AppForm: FunctionComponent<thisProps> = ({
         const dateElem = fieldset?.querySelector(
             "input[name='date']"
         ) as HTMLInputElement;
-        const date = new Date(dateElem?.value);
+        const date = dateElem?.value;
         const sourceElem = fieldset?.querySelector(
             "input[name='source']"
         ) as HTMLInputElement;
@@ -115,107 +114,151 @@ const AppForm: FunctionComponent<thisProps> = ({
     }
 
     return (
-        <form className="application-form" onSubmit={setApplication}>
-            <fieldset
+        <Grid
+            item
+            xs={3.9}
+            component="form"
+            autoComplete="off"
+            onSubmit={setApplication}
+            sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                border: "1px solid",
+                borderColor: "info.light",
+                borderRadius: "5px",
+            }}
+        >
+            <FormControl
                 disabled={disabled}
-                className={application?.rejected ? "rejected" : ""}
+                error={application?.rejected}
+                sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "10px",
+                }}
             >
-                <input
+                <TextField
                     name="companyName"
-                    placeholder="companyName"
+                    label="Company name"
                     defaultValue={application?.companyName}
+                    size="small"
                 />
-                <div>
-                    <label htmlFor="date">Applied date</label>
-                    <input
-                        name="date"
-                        type="date"
-                        defaultValue={
-                            application?.date ? getDate(application?.date) : ""
-                        }
-                    />
-                </div>
-                <input
+                <TextField
+                    name="date"
+                    label="Applied date"
+                    defaultValue={application?.date}
+                    size="small"
+                />
+                <TextField
                     name="source"
-                    placeholder="Source"
+                    label="Source"
                     defaultValue={application?.source}
+                    size="small"
                 />
-                <input
+                <TextField
                     name="city"
-                    placeholder="city"
+                    label="City"
                     defaultValue={application?.city}
+                    size="small"
                 />
-                <div>
-                    <input
-                        type="checkbox"
-                        name="rejected"
-                        defaultChecked={application?.rejected}
-                    />
-                    <label htmlFor="rejected">Got rejected?</label>
-                </div>
-                <div>
-                    <input
-                        type="checkbox"
-                        name="remote"
-                        defaultChecked={application?.remote}
-                    />
-                    <label htmlFor="remote">Is remote?</label>
-                </div>
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            defaultChecked={application?.rejected}
+                            name="rejected"
+                            size="small"
+                        />
+                    }
+                    label="Rejected"
+                />
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            defaultChecked={application?.remote}
+                            name="remote"
+                            size="small"
+                        />
+                    }
+                    label="Remote"
+                />
                 <div className="application-link-wrapper">
-                    <input
+                    <TextField
                         name="link1"
-                        placeholder="link"
+                        label="Link"
                         defaultValue={application?.link1}
+                        variant="standard"
                         onChange={(e) => handleLinkChange(e.target.value, 1)}
+                        size="small"
                     />
                     {links.link1 && (
-                        <a href={links.link1} target="_blank">
+                        <Link href={links.link1} target="_blank">
                             Navigate
-                        </a>
+                        </Link>
                     )}
                 </div>
                 <div className="application-link-wrapper">
-                    <input
+                    <TextField
                         name="link2"
-                        placeholder="link"
+                        label="Link"
                         defaultValue={application?.link2}
+                        variant="standard"
                         onChange={(e) => handleLinkChange(e.target.value, 2)}
+                        size="small"
                     />
                     {links.link2 && (
-                        <a href={links.link2} target="_blank">
+                        <Link href={links.link2} target="_blank">
                             Navigate
-                        </a>
+                        </Link>
                     )}
                 </div>
 
                 <div className="application-link-wrapper">
-                    <input
+                    <TextField
                         name="link3"
-                        placeholder="link"
+                        label="Link"
                         defaultValue={application?.link3}
+                        variant="standard"
                         onChange={(e) => handleLinkChange(e.target.value, 3)}
+                        size="small"
                     />
                     {links.link3 && (
-                        <a href={links.link3} target="_blank">
+                        <Link href={links.link3} target="_blank">
                             Navigate
-                        </a>
+                        </Link>
                     )}
                 </div>
 
-                <textarea
+                <TextField
                     name="notes"
-                    placeholder="notes"
+                    label="Notes"
                     defaultValue={application?.notes}
+                    multiline
+                    maxRows={3}
                 />
                 {application?.rejected && (
                     <div className="form-rejected-overlay"></div>
                 )}
-            </fieldset>
-            <button type="submit" disabled={disabled || loading}>
-                {loading ? "Loading" : "Submit"}
-            </button>
-            {application && (
-                <button
+            </FormControl>
+            {!loading ? (
+                <Button
+                    sx={{ mt: "5px" }}
+                    type="submit"
+                    disabled={disabled || loading}
+                >
+                    {loading ? "Loading" : "Submit"}
+                </Button>
+            ) : (
+                <CircularProgress
+                    sx={{
+                        my: "5px",
+                        height: "25px !important",
+                        width: "25px !important",
+                    }}
+                />
+            )}
+            {application && !loading && (
+                <Button
                     disabled={loading}
                     onClick={(e) => {
                         e.preventDefault();
@@ -223,9 +266,18 @@ const AppForm: FunctionComponent<thisProps> = ({
                     }}
                 >
                     {loading ? "Loading" : "Edit"}
-                </button>
+                </Button>
             )}
-        </form>
+            {application && loading && (
+                <CircularProgress
+                    sx={{
+                        my: "5px",
+                        height: "25px !important",
+                        width: "25px !important",
+                    }}
+                />
+            )}
+        </Grid>
     );
 };
 

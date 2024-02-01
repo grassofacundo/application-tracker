@@ -1,19 +1,12 @@
 .panel-wrapper {
     border: 1px solid black;
+    border-radius: 5px;
     margin: 10px 0px;
 }
 
 .country-panel {
     display: flex;
     gap: 10px;
-}
-
-.application-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 500px));
-    justify-content: center;
-    gap: 5px;
-    margin: 10px 0px;
 }
 
 .application-form {

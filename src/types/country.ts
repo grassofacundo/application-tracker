@@ -1,4 +1,4 @@
-import { applicationDb } from "./database";
+import { application } from "./database";
 
 export type countryResponseApi = {
     name: {
@@ -25,5 +25,5 @@ export type countryStoredInList = {
 export type countryStoredAsDoc = {
     name: string;
     selectedCount: number;
-    applications?: applicationDb[];
+    applications?: application[];
 };

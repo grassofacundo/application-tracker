@@ -13,6 +13,7 @@ import Panel from "../applicationPanel/applicationPanel";
 import AddCountryPanel from "../addCountryPanel/addCountryPanel";
 import { getAuth, signOut } from "firebase/auth";
 import "./landing.css";
+import { Button } from "@mui/material";
 //#endregion
 
 type thisProps = {
@@ -73,7 +74,13 @@ const Landing: FunctionComponent<thisProps> = ({ setIsAuth }) => {
         <>
             {!loading && (
                 <div>
-                    <button onClick={handleLogOut}>Log out</button>
+                    <Button
+                        variant="text"
+                        sx={{ color: "black", overflow: "auto" }}
+                        onClick={handleLogOut}
+                    >
+                        Log out
+                    </Button>
                     <h1>Getting hired, one country at a time</h1>
                     {countryList.length > 0 && (
                         <GetCountryPanel loading={loading} />
@@ -81,9 +88,13 @@ const Landing: FunctionComponent<thisProps> = ({ setIsAuth }) => {
                     <div>
                         {countryList.length > 0 && (
                             <div className="country-list">
-                                <button
+                                <Button
+                                    variant="outlined"
+                                    size="small"
                                     onClick={() => setShowList((bool) => !bool)}
-                                >{`${showList ? "Hide" : "Show"} list`}</button>
+                                >
+                                    {`${showList ? "Hide" : "Show"} list`}
+                                </Button>
                                 {showList &&
                                     countryList.map((country) => (
                                         <Panel
@@ -94,12 +105,14 @@ const Landing: FunctionComponent<thisProps> = ({ setIsAuth }) => {
                                     ))}
                             </div>
                         )}
-                        <button
-                            className="show-panel-button"
+                        <Button
+                            variant="outlined"
+                            size="small"
+                            sx={{ mt: "10px" }}
                             onClick={() => setShowPanel((bool) => !bool)}
                         >
                             {`${showPanel ? "Hide" : "Show"} add country panel`}
-                        </button>
+                        </Button>
                         {showPanel && (
                             <AddCountryPanel
                                 countryList={countryList}

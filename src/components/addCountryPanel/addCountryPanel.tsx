@@ -9,7 +9,7 @@ import {
 import countryService from "../../services/country";
 import firebaseDb from "../../services/firebase";
 import { countryStoredInList } from "../../types/country";
-import "./addCountryPanel.css";
+import { Box, Button, CircularProgress, TextField } from "@mui/material";
 //#endregion
 
 type thisProps = {
@@ -27,7 +27,9 @@ const AddCountryPanel: FunctionComponent<thisProps> = ({
 }) => {
     const inputList = useRef<string[]>([]);
 
-    function parseCountryList(event: ChangeEvent<HTMLTextAreaElement>) {
+    function parseCountryList(
+        event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) {
         const rawText = event.currentTarget.value;
         if (!rawText) return;
         const untrimmedNameList = rawText.split(",");
@@ -94,20 +96,36 @@ const AddCountryPanel: FunctionComponent<thisProps> = ({
     }
 
     return (
-        <div className="add-country">
+        <Box
+            sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: "15px",
+                mt: "10px",
+            }}
+        >
             <p>
                 {
                     "Add a new country or a list of countries (The list should have all countries separated by commas)"
                 }
             </p>
-            <textarea
+            <TextField
                 name="inputName"
+                multiline
+                fullWidth
+                sx={{ width: "80%" }}
+                maxRows={7}
                 onChange={(e) => parseCountryList(e)}
-            ></textarea>
-            <button onClick={handleAddCountry}>
-                {loading ? "Loading" : "Add country"}
-            </button>
-        </div>
+            />
+            {!loading ? (
+                <Button variant="contained" onClick={handleAddCountry}>
+                    {"Add country"}
+                </Button>
+            ) : (
+                <CircularProgress />
+            )}
+        </Box>
     );
 };
 

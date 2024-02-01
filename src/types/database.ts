@@ -1,5 +1,3 @@
-import { Timestamp } from "firebase/firestore";
-
 export type eventReturn<contentType> = {
     ok: boolean;
     content?: contentType;
@@ -18,14 +16,9 @@ export interface applicationBase {
     link1: string;
     link2: string;
     link3: string;
-}
-
-export interface applicationDb extends applicationBase {
-    id?: string;
-    date: Timestamp; //timestamp
+    date: string;
 }
 
 export interface application extends applicationBase {
     id?: string;
-    date: Date;
 }

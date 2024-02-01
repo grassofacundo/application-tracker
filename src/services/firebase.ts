@@ -11,7 +11,7 @@ import {
     limit,
     orderBy,
 } from "firebase/firestore";
-import { application, applicationDb, eventReturn } from "../types/database";
+import { application, eventReturn } from "../types/database";
 import { countryStoredAsDoc, countryStoredInList } from "../types/country";
 
 const firebaseConfig = {
@@ -190,8 +190,8 @@ class FirebaseDb {
 
     async getApplications(
         countryCode: string
-    ): Promise<eventReturn<applicationDb[]>> {
-        const response: eventReturn<applicationDb[]> = {
+    ): Promise<eventReturn<application[]>> {
+        const response: eventReturn<application[]> = {
             ok: false,
         };
         //Create entry
@@ -201,7 +201,7 @@ class FirebaseDb {
             if (list.exists()) {
                 response.ok = true;
                 const data = list.data();
-                response.content = data.applications as applicationDb[];
+                response.content = data.applications as application[];
             }
         } catch (error) {
             response.ok = false;

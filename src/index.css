@@ -1,19 +1,37 @@
+html,
+body {
+    min-height: 100vh;
+    max-height: 100vh;
+    min-width: 100vw;
+    max-width: 100vw;
+    overflow-x: hidden;
+}
+
+#root {
+    min-height: 100%;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background-color: #cfe5f5;
+}
+
 p {
     padding: 0;
     margin: 0;
 }
 
-button {
+/* button {
     width: fit-content;
     cursor: pointer;
     transition: transform 150ms ease-in-out;
     transform: scale(1);
-}
+} */
 
-button:hover {
+/* button:hover {
     transform: scale(1.1);
 }
 
 button:disabled {
     cursor: not-allowed;
-}
+} */

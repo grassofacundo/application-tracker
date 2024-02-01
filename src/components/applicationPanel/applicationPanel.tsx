@@ -4,7 +4,7 @@ import { application, eventReturn } from "../../types/database";
 import firebaseDb from "../../services/firebase";
 import "./applicationPanel.css";
 import AppForm from "./applicationForm";
-import { Timestamp } from "firebase/firestore";
+import { Button, Grid, LinearProgress } from "@mui/material";
 //#endregion
 
 type thisProps = {
@@ -16,11 +16,6 @@ const Panel: FunctionComponent<thisProps> = ({ name, code }) => {
     const [showPanel, setShowPanel] = useState<boolean>(false);
     const [applications, setApplications] = useState<application[]>([]);
     const [loading, isLoading] = useState<boolean>(true);
-
-    function parseDate(timestamp: Timestamp): Date {
-        const newDate = new Date(timestamp.seconds * 1000);
-        return newDate;
-    }
 
     function createId(): string {
         return Math.random().toString(16).slice(2);
@@ -36,7 +31,7 @@ const Panel: FunctionComponent<thisProps> = ({ name, code }) => {
                 response.content.forEach((app) => {
                     const newApp: application = {
                         id: app.id,
-                        date: parseDate(app.date),
+                        date: app.date,
                         companyName: app.companyName,
                         source: app.source,
                         rejected: app.rejected,
@@ -89,13 +84,17 @@ const Panel: FunctionComponent<thisProps> = ({ name, code }) => {
     return (
         <div className="panel-wrapper">
             <div className="country-panel">
-                <button onClick={handleShowPanel}>
-                    {showPanel ? "Hide" : "Show"}
-                </button>
-                <p key={code}>{name}</p>
+                <Button onClick={handleShowPanel}>
+                    {`${showPanel ? "Hide" : "Show"} ${name}`}
+                </Button>
             </div>
             {showPanel && !loading && (
-                <div className="application-list">
+                <Grid
+                    container
+                    rowSpacing={2}
+                    gap={"1px"}
+                    sx={{ my: "5px", mx: "10px", width: "calc(100% - 20px)" }}
+                >
                     {applications.map((app) => (
                         <AppForm
                             key={app.id}
@@ -107,9 +106,9 @@ const Panel: FunctionComponent<thisProps> = ({ name, code }) => {
                         key={"unique"}
                         onUpdateApplications={updateApplications}
                     ></AppForm>
-                </div>
+                </Grid>
             )}
-            {showPanel && loading && <p>Loading...</p>}
+            {showPanel && loading && <LinearProgress />}
         </div>
     );
 };

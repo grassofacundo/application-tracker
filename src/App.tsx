@@ -12,6 +12,7 @@ import {
 } from "firebase/auth";
 import firebaseDb from "./services/firebase";
 import "./App.css";
+import { Box } from "@mui/material";
 //#endregion
 
 type thisProps = unknown;
@@ -98,7 +99,16 @@ const App: FunctionComponent<thisProps> = () => {
     });
 
     return (
-        <div>
+        <Box
+            sx={{
+                bgcolor: "background.paper",
+                height: "100%",
+                minHeight: "100vh",
+                width: "100%",
+                padding: "15px",
+                maxWidth: "1000px",
+            }}
+        >
             {isAuth && <Landing setIsAuth={setIsAuth} />}
             {!isAuth && (
                 <div className="form-container">
@@ -143,7 +153,7 @@ const App: FunctionComponent<thisProps> = () => {
                     </p>
                 </div>
             )}
-        </div>
+        </Box>
     );
 };
 
